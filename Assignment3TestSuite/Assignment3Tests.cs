@@ -27,7 +27,7 @@ namespace Assignment3TestSuite
     {
         private const int Port = 5000;
 
-        
+
 
         //////////////////////////////////////////////////////////
         /// 
@@ -36,280 +36,280 @@ namespace Assignment3TestSuite
         ////////////////////////////////////////////////////////// 
 
 
-        //[Fact]
-        //public void Constraint_ConnectionWithoutRequest_ShouldConnect()
-        //{                      
-        //        var client = Connect();
-        //        Assert.True(client.Connected);                               
-        //}
+        [Fact]
+        public void Constraint_ConnectionWithoutRequest_ShouldConnect()
+        {
+            var client = Connect();
+            Assert.True(client.Connected);
+        }
 
-        ///*    Method Tests     */
+        /*    Method Tests     */
 
-        //[Fact]
-        //public void Constraint_RequestWithoutMethod_MissingMethodError()
-        //{
-        //    var client = Connect();
-            
-        //    client.SendRequest("{}");            
+        [Fact]
+        public void Constraint_RequestWithoutMethod_MissingMethodError()
+        {
+            var client = Connect();
 
-        //    var response = client.ReadResponse();
+            client.SendRequest("{}");
 
-        //    Assert.Contains("missing method", response?.Status?.ToLower());
-        //}
+            var response = client.ReadResponse();
 
-        //[Fact]
-        //public void Constraint_RequestWithUnknownMethod_IllegalMethodError()
-        //{
-        //    var client = Connect();
+            Assert.Contains("missing method", response?.Status?.ToLower());
+        }
 
-        //    var request = new
-        //    {
-        //        Method = "xxxx",
-        //        Path = "testing",
-        //        Date = int.Parse(UnixTimestamp()),
-        //        Body = "{}"
-        //    };
+        [Fact]
+        public void Constraint_RequestWithUnknownMethod_IllegalMethodError()
+        {
+            var client = Connect();
 
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
+            var request = new
+            {
+                Method = "xxxx",
+                Path = "testing",
+                Date = int.Parse(UnixTimestamp()),
+                Body = "{}"
+            };
 
-        //    Assert.Contains("illegal method", response?.Status?.ToLower());
-        //}
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
+
+            Assert.Contains("illegal method", response?.Status?.ToLower());
+        }
 
 
-        //[Theory]
-        //[InlineData("create")]
-        //[InlineData("read")]
-        //[InlineData("update")]
-        //[InlineData("delete")]
-        //public void Constraint_RequestForCreateReadUpdateDeleteWithoutResource_MissingResourceError(string method)
-        //{
-        //    var client = Connect();
+        [Theory]
+        [InlineData("create")]
+        [InlineData("read")]
+        [InlineData("update")]
+        [InlineData("delete")]
+        public void Constraint_RequestForCreateReadUpdateDeleteWithoutResource_MissingResourceError(string method)
+        {
+            var client = Connect();
 
-        //    var request = new
-        //    {
-        //        Method = method,
-        //        Date = int.Parse(DateTimeOffset.Now.ToUnixTimeSeconds().ToString())
-        //    };
+            var request = new
+            {
+                Method = method,
+                Date = int.Parse(DateTimeOffset.Now.ToUnixTimeSeconds().ToString())
+            };
 
-        //    client.SendRequest(request.ToJson());
+            client.SendRequest(request.ToJson());
 
-        //    var response = client.ReadResponse();
+            var response = client.ReadResponse();
 
-        //    Assert.Contains("missing resource", response?.Status?.ToLower());
-        //}
+            Assert.Contains("missing resource", response?.Status?.ToLower());
+        }
 
         /* Date Tests    */
 
+        [Fact]
+        public void Constraint_RequestWithoutDate_MissingDateError()
+        {
+            var client = Connect();
+
+            client.SendRequest("{}");
+
+            var response = client.ReadResponse();
+
+            Assert.Contains("missing date", response?.Status?.ToLower());
+        }
+
+        // Date is already expected to be an int in the request model.***********
         //[Fact]
-        //public void Constraint_RequestWithoutDate_MissingDateError()
-        //{
-        //    var client = Connect();
-
-        //    client.SendRequest("{}");
-
-        //    var response = client.ReadResponse();
-
-        //    Assert.Contains("missing date", response?.Status?.ToLower());
-        //}
-
-        //// Date is already expected to be an int in the request model.***********
-        ////[Fact]
-        ////public void Constraint_RequestWhereDateIsNotUnixTime_IllegalDateError()
-        ////{
-        ////    var client = Connect();
-
-        ////    var request = new
-        ////    {
-        ////        Method = "update",
-        ////        Path = "testing",
-        ////        Date = DateTimeOffset.Now.ToString(),
-        ////        Body = (new { cid = 1, Name = "Beverages" }).ToJson()
-        ////    };
-
-        ////    client.SendRequest(request.ToJson());
-        ////    var response = client.ReadResponse();
-
-        ////    Assert.Contains("illegal date", response?.Status?.ToLower());
-        ////}
-
-        ///* Body Tests    */
-
-        //[Theory]
-        //[InlineData("create")]
-        //[InlineData("update")]
-        //[InlineData("echo")]
-        //public void Constraint_RequestForCreateUpdateEchoWithoutBody_MissingBodyError(string method)
-        //{
-        //    var client = Connect();
-
-        //    var request = new
-        //    {
-        //        Method = method,
-        //        Path = "testing",
-        //        Date = int.Parse(UnixTimestamp())
-        //    };
-
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
-
-        //    Assert.Contains("missing body", response?.Status?.ToLower());
-        //}
-
-
-        //[Fact]
-        //public void Constraint_RequestUpdateWithoutJsonBody_IllegalBodyError()
+        //public void Constraint_RequestWhereDateIsNotUnixTime_IllegalDateError()
         //{
         //    var client = Connect();
 
         //    var request = new
         //    {
         //        Method = "update",
-        //        Path = "/api/categories/1",
-        //        Date = int.Parse(UnixTimestamp()),
-        //        Body = "Hello World"
+        //        Path = "testing",
+        //        Date = DateTimeOffset.Now.ToString(),
+        //        Body = (new { cid = 1, Name = "Beverages" }).ToJson()
         //    };
 
         //    client.SendRequest(request.ToJson());
         //    var response = client.ReadResponse();
 
-
-        //    Assert.Contains("illegal body", response?.Status?.ToLower());
-
+        //    Assert.Contains("illegal date", response?.Status?.ToLower());
         //}
 
-        ///* Echo Test */
-        //[Fact]
-        //public void Echo_RequestWithBody_ReturnsBody()
-        //{
-        //    var client = Connect();
+        /* Body Tests    */
 
-        //    var request = new
-        //    {
-        //        Method = "echo",
-        //        Date = int.Parse(UnixTimestamp()),
-        //        Body = "Hello World"
-        //    };
+        [Theory]
+        [InlineData("create")]
+        [InlineData("update")]
+        [InlineData("echo")]
+        public void Constraint_RequestForCreateUpdateEchoWithoutBody_MissingBodyError(string method)
+        {
+            var client = Connect();
 
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
+            var request = new
+            {
+                Method = method,
+                Path = "testing",
+                Date = int.Parse(UnixTimestamp())
+            };
 
-        //    Assert.Equal("Hello World", response?.Body);
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
 
-        //}
+            Assert.Contains("missing body", response?.Status?.ToLower());
+        }
 
-        //////////////////////////////////////////////////////////
-        /// 
-        /// Testing API 
-        /// 
-        ////////////////////////////////////////////////////////// 
+
+        [Fact]
+        public void Constraint_RequestUpdateWithoutJsonBody_IllegalBodyError()
+        {
+            var client = Connect();
+
+            var request = new
+            {
+                Method = "update",
+                Path = "/api/categories/1",
+                Date = int.Parse(UnixTimestamp()),
+                Body = "Hello World"
+            };
+
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
+
+
+            Assert.Contains("illegal body", response?.Status?.ToLower());
+
+        }
+
+        /* Echo Test */
+        [Fact]
+        public void Echo_RequestWithBody_ReturnsBody()
+        {
+            var client = Connect();
+
+            var request = new
+            {
+                Method = "echo",
+                Date = int.Parse(UnixTimestamp()),
+                Body = "Hello World"
+            };
+
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
+
+            Assert.Equal("Hello World", response?.Body);
+
+        }
+
+        ////////////////////////////////////////////////////////
+        / 
+        / Testing API 
+        / 
+        //////////////////////////////////////////////////////// 
 
         /* Path tests  */
 
-        //[Fact]
-        //public void Constraint_RequestWithInvalidPath_StatusBadRequest()
-        //{
-        //    var client = Connect();
+        [Fact]
+        public void Constraint_RequestWithInvalidPath_StatusBadRequest()
+        {
+            var client = Connect();
 
-        //    var request = new
-        //    {
-        //        Method = "read",
-        //        Path = "/api/xxx",
-        //        Date = int.Parse(UnixTimestamp())
-        //    };
+            var request = new
+            {
+                Method = "read",
+                Path = "/api/xxx",
+                Date = int.Parse(UnixTimestamp())
+            };
 
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
 
-        //    var expectedResponse = new Response { Status = "4 Bad Request" };
+            var expectedResponse = new Response { Status = "4 Bad Request" };
 
-        //    Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
-        //}
-
-
-        //[Fact]
-        //public void Constraint_RequestWithInvalidPathId_StatusBadRequest()
-        //{
-        //    var client = Connect();
-
-        //    var request = new
-        //    {
-        //        Method = "read",
-        //        Path = "/api/categories/xxx",
-        //        Date = int.Parse(UnixTimestamp())
-        //    };
-
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
-
-        //    var expectedResponse = new Response { Status = "4 Bad Request" };
-
-        //    Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
-        //}
+            Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
+        }
 
 
-        //[Fact]
-        //public void Constraint_CreateWithPathId_StatusBadRequest()
-        //{
-        //    var client = Connect();
+        [Fact]
+        public void Constraint_RequestWithInvalidPathId_StatusBadRequest()
+        {
+            var client = Connect();
 
-        //    var request = new
-        //    {
-        //        Method = "create",
-        //        Path = "/api/categories/1",
-        //        Date = int.Parse(UnixTimestamp()),
-        //        Body = (new { Name = "" }).ToJson()
-        //    };
+            var request = new
+            {
+                Method = "read",
+                Path = "/api/categories/xxx",
+                Date = int.Parse(UnixTimestamp())
+            };
 
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
 
-        //    var expectedResponse = new Response { Status = "4 Bad Request" };
+            var expectedResponse = new Response { Status = "4 Bad Request" };
 
-        //    Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
-        //}
+            Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
+        }
 
 
-        //[Fact]
-        //public void Constraint_UpdateWithOutPathId_StatusBadRequest()
-        //{
-        //    var client = Connect();
+        [Fact]
+        public void Constraint_CreateWithPathId_StatusBadRequest()
+        {
+            var client = Connect();
 
-        //    var request = new
-        //    {
-        //        Method = "update",
-        //        Path = "/api/categories",
-        //        Date = int.Parse(UnixTimestamp()),
-        //        Body = (new { Name = "" }).ToJson()
-        //    };
+            var request = new
+            {
+                Method = "create",
+                Path = "/api/categories/1",
+                Date = int.Parse(UnixTimestamp()),
+                Body = (new { Name = "" }).ToJson()
+            };
 
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
 
-        //    var expectedResponse = new Response { Status = "4 Bad Request" };
+            var expectedResponse = new Response { Status = "4 Bad Request" };
 
-        //    Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
-        //}
+            Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
+        }
 
-        //[Fact]
-        //public void Constraint_DeleteWithOutPathId_StatusBadRequest()
-        //{
-        //    var client = Connect();
 
-        //    var request = new
-        //    {
-        //        Method = "delete",
-        //        Path = "/api/categories",
-        //        Date = int.Parse(UnixTimestamp())
-        //    };
+        [Fact]
+        public void Constraint_UpdateWithOutPathId_StatusBadRequest()
+        {
+            var client = Connect();
 
-        //    client.SendRequest(request.ToJson());
-        //    var response = client.ReadResponse();
+            var request = new
+            {
+                Method = "update",
+                Path = "/api/categories",
+                Date = int.Parse(UnixTimestamp()),
+                Body = (new { Name = "" }).ToJson()
+            };
 
-        //    var expectedResponse = new Response { Status = "4 Bad Request" };
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
 
-        //    Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
-        //}
+            var expectedResponse = new Response { Status = "4 Bad Request" };
+
+            Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
+        }
+
+        [Fact]
+        public void Constraint_DeleteWithOutPathId_StatusBadRequest()
+        {
+            var client = Connect();
+
+            var request = new
+            {
+                Method = "delete",
+                Path = "/api/categories",
+                Date = int.Parse(UnixTimestamp())
+            };
+
+            client.SendRequest(request.ToJson());
+            var response = client.ReadResponse();
+
+            var expectedResponse = new Response { Status = "4 Bad Request" };
+
+            Assert.Equal(expectedResponse.ToJson().ToLower(), response?.ToJson().ToLower());
+        }
 
 
 
